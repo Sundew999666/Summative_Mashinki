@@ -9,7 +9,7 @@ EPS = 0.1
 
 class Car:
     def __init__(self, x, y, dir = 0):
-        self.x, self.y = x, y
+        self.x, self.y = int(x)+0.2, int(y)+0.2
         self.size = 1 / 15 # доля тайла, тайлы 1x1
         self.speed = 1 # тайлов в секунду
         self.dir = dir
@@ -27,10 +27,6 @@ class Car:
 class StupidCar(Car):
     def __init__(self, x, y, it, dir=0):
         super().__init__(x, y, dir)
-        self.x, self.y = int(x)+0.2, int(y)+0.2
-        self.size = 1 / 15  # доля тайла, тайлы 1x1
-        self.speed = 1  # тайлов в секунду
-        self.dir = dir
         self.it = it
 
     def draw(self):
@@ -87,10 +83,6 @@ class StupidCar(Car):
 class SmartCar(Car):
     def __init__(self, x, y, it, dir=0):
         super().__init__(x, y, dir)
-        self.x, self.y = int(x)+0.2, int(y)+0.2
-        self.size = 1 / 15  # доля тайла, тайлы 1x1
-        self.speed = 1  # тайлов в секунду
-        self.dir = dir
         self.it = it
 
     def draw(self):
@@ -135,10 +127,38 @@ class SmartCar(Car):
                         self.dir = (self.dir + 1) % 4
                     else:
                         self.dir = (self.dir - 1) % 4
-            if isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn in ['rightnleft', 'upndown'] and self.speed < 3:
+            if isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn in ['rightnleft', 'upndown'] and self.speed < 2:
                 self.speed += 0.025
             elif isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn not in ['rightnleft', 'upndown'] and self.speed > 0.5:
                 self.speed -= 0.05
+            if cur_tile.turn not in ['rightnleft', 'upndown']:
+                cur_tile_dtd = cur_tile.dist_to_border(self.x, self.y, 3)
+                cur_tile_dtr = cur_tile.dist_to_border(self.x, self.y, 0)
+                if cur_tile.turn == "leftndown":
+                    if 0.17 < cur_tile_dtd < 0.22 and 0.82 > cur_tile_dtr > 0.74:
+                        if self.dir == 0:
+                            self.dir = (self.dir - 1) % 4
+                        elif self.dir == 1:
+                            self.dir = (self.dir + 1) % 4
+                if cur_tile.turn == "leftnup":
+                    if 0.82 > cur_tile_dtd > 0.74 and 0.82 > cur_tile_dtr > 0.74:
+                        if self.dir == 0:
+                            self.dir = (self.dir + 1) % 4
+                        elif self.dir == 3:
+                            self.dir = (self.dir - 1) % 4
+                if cur_tile.turn == "rightndown":
+                    if 0.17 < cur_tile_dtd < 0.22 and 0.18 < cur_tile_dtr < 0.22:
+                        if self.dir == 2:
+                            self.dir = (self.dir + 1) % 4
+                            print(self.dir)
+                        elif self.dir == 1:
+                            self.dir = (self.dir - 1) % 4
+                if cur_tile.turn == "rightnup":
+                    if 0.17 < cur_tile_dtr < 0.22 and 0.82 > cur_tile_dtd > 0.74:
+                        if self.dir == 2:
+                            self.dir = (self.dir - 1) % 4
+                        elif self.dir == 3:
+                            self.dir = (self.dir + 1) % 4
         else:
             pass
 
