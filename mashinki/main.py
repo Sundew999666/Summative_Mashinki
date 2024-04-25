@@ -1,5 +1,5 @@
 import settings
-from maze import Maze
+from maze import maze
 from ui import events
 from ui import graphics
 
