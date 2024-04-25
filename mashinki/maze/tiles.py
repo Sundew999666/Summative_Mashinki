@@ -1,8 +1,16 @@
+'''
+Файл, ответственный за само существование тайла на поле и его свойствах - количество соединённых свободных тайлов,
+тип тайла, его состояние и его картинка
+'''
+
+
 from maze import Maze
 from maze.directions import directions
 from ui import graphics
 
-
+'''
+Базовый класс, к нему ссылаютсят его "дет"
+'''
 class Tile:
     def __init__(self, tile_type, row, column):
         self.tile_type = tile_type
@@ -27,14 +35,19 @@ class Tile:
             return x
         return 1 - y
 
-
+'''
+Ссылается на класс "Tile". Отвечает за существование клетки с пустым пространством, которая в подсчётах считается
+стеной
+'''
 class Wall_tile(Tile):
     def __init__(self, row, column):
         super().__init__("1", row, column)
 
     def draw(self):
         pass
-
+'''
+Ссылается на класс "Tile". Отвечает за клетки с дорогами и также за то, что видит игрок и то, насколько всё красиво
+'''
 
 class Room_tile(Tile):
     def __init__(self, row, column, sides, turn):

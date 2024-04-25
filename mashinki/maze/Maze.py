@@ -1,3 +1,9 @@
+'''
+Файл "Maze.py" - "мозг" всей симуляции. Здесь функции отвечают за всё то, что происходит на поле - генерацию,
+добавление/удаление машин и самое главное - функция "update", которая обновляет состовляющую всей симуляции
+'''
+
+
 import settings
 from maze.cars import StupidCar, SmartCar
 from maze.tiles import Room_tile, Wall_tile
@@ -6,12 +12,13 @@ from maze.tiles import Room_tile, Wall_tile
 maze = []
 stupidcar = []
 smartcar = []
-##########################################################
-# Грузим карту
+
+'''
+Здесь находится генерация лабиринта в картинки из 0 и 1, которые находятся в файле map.txt
+'''
 with open(settings.map_file) as f:
     map_txt = f.readlines()
 
-# Строим карту из настоящих объектных тайлов
 for row, line in enumerate(map_txt):
     maze.append([])
     for column, tile_type in enumerate(line[:-1]):
@@ -63,10 +70,12 @@ for row, line in enumerate(map_txt):
                     maze[row].append(Room_tile(row, column, 1, 'right'))
         else:
             maze[row].append(Wall_tile(row, column))
-###########################################################
 
 
-# Рисуем все: и тайлы и мышей
+
+'''
+Вызов рисовки некоторых объектов
+'''
 def draw():
     for row in range(len(maze)):
         for column in range(len(maze[row])):
@@ -76,7 +85,9 @@ def draw():
             each.draw()
 
 
-# Получаем тайл по координатам лабиринта
+'''
+Одна из вспомогательных функций, которые позволяют по координатам получить тайл на дороге
+'''
 def get_tile(x, y):
     if 0 <= y < len(maze) and 0 <= x < len(maze[int(y)]):
         tile_column, tile_row = int(x), int(y)
@@ -85,8 +96,10 @@ def get_tile(x, y):
         return None
 
 
-# двигаем, все что движется
-# вызов этой функции постоянно в цикле в main.py
+'''
+Главная часть всей системы - обновления того, что есть на картинке. Эта функция заната тем, что проверяет, 
+есть ли поломки на поле, и также вызывает обновление каждого файла
+'''
 def update(delta_time):
     if len(stupidcar) > 0:
         for each in stupidcar:
@@ -95,6 +108,9 @@ def update(delta_time):
             if m1 is not None:
                 m1.broken = True
 
+'''
+Функция, которая по кнопке позволяет удалить все машины, что уже сломались друг об друга, если стало невозможно
+'''
 def clearbroken():
     eachst, eachsm = 0, 0
     while eachst != len(stupidcar):
@@ -108,6 +124,10 @@ def clearbroken():
         else:
             eachsm += 1
 
+'''
+Эти две функции отвечают за появление неадекватного и адекватного водителя за рулём, а также передаёт ему сторону 
+движения
+'''
 def add_stupidcar(x, y, it, dir):
     global stupidcar
     stupidcar.append(StupidCar(x, y, it, dir))
