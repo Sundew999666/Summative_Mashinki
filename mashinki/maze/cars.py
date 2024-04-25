@@ -54,7 +54,6 @@ class StupidCar(Car):
                     f1 = 1
                 if isinstance(cur_tile.get_neighb_tile((self.dir + 1) % 4), Room_tile):
                     f2 = 1
-                print(f1, f2)
                 if f1 == 1:
                     if f2 == 1:
                         d = choice([-1, 1])
@@ -67,6 +66,10 @@ class StupidCar(Car):
                     if cur_tile.sides == 3 and cur_tile.turn == "right" and cur_tile.dist_to_border(self.x, self.y, 3) > 0.25:
                         self.dir = (self.dir + 1) % 4
                     elif cur_tile.sides == 3 and cur_tile.turn == "left" and cur_tile.dist_to_border(self.x, self.y, 3) < 0.25:
+                        self.dir = (self.dir + 1) % 4
+                    elif cur_tile.sides == 3 and cur_tile.turn == "up" and cur_tile.dist_to_border(self.x, self.y, 0) > 0.75:
+                        self.dir = (self.dir + 1) % 4
+                    elif cur_tile.sides == 3 and cur_tile.turn == "down" and cur_tile.dist_to_border(self.x, self.y, 0) < 0.75:
                         self.dir = (self.dir + 1) % 4
                     else:
                         self.dir = (self.dir - 1) % 4
@@ -125,6 +128,10 @@ class SmartCar(Car):
                     elif cur_tile.sides == 3 and cur_tile.turn == "left" and cur_tile.dist_to_border(self.x, self.y,
                                                                                                      3) < 0.25:
                         self.dir = (self.dir + 1) % 4
+                    elif cur_tile.sides == 3 and cur_tile.turn == "up" and cur_tile.dist_to_border(self.x, self.y, 0) > 0.75:
+                        self.dir = (self.dir + 1) % 4
+                    elif cur_tile.sides == 3 and cur_tile.turn == "down" and cur_tile.dist_to_border(self.x, self.y, 0) < 0.75:
+                        self.dir = (self.dir + 1) % 4
                     else:
                         self.dir = (self.dir - 1) % 4
             if isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn in ['rightnleft', 'upndown'] and self.speed < 2:
@@ -150,7 +157,6 @@ class SmartCar(Car):
                     if 0.17 < cur_tile_dtd < 0.22 and 0.18 < cur_tile_dtr < 0.22:
                         if self.dir == 2:
                             self.dir = (self.dir + 1) % 4
-                            print(self.dir)
                         elif self.dir == 1:
                             self.dir = (self.dir - 1) % 4
                 if cur_tile.turn == "rightnup":
