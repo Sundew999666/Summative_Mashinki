@@ -1,5 +1,5 @@
 import settings
-from maze.mice import StupidCar, SmartCar
+from maze.cars import StupidCar, SmartCar
 from maze.tiles import Room_tile, Wall_tile
 
 
@@ -108,10 +108,10 @@ def clearbroken():
         else:
             eachsm += 1
 
-def add_stupidcar(x, y, it):
+def add_stupidcar(x, y, it, dir):
     global stupidcar
-    stupidcar.append(StupidCar(x, y, it))
+    stupidcar.append(StupidCar(x, y, it, dir))
 
-def add_smartcar(x, y, it):
+def add_smartcar(x, y, it, dir):
     global smartcar
-    stupidcar.append(SmartCar(x, y, it))
+    stupidcar.append(SmartCar(x, y, it, dir))

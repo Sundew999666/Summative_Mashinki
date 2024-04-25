@@ -58,6 +58,7 @@ class StupidCar(Car):
                     f1 = 1
                 if isinstance(cur_tile.get_neighb_tile((self.dir + 1) % 4), Room_tile):
                     f2 = 1
+                print(f1, f2)
                 if f1 == 1:
                     if f2 == 1:
                         d = choice([-1, 1])
@@ -67,7 +68,12 @@ class StupidCar(Car):
                 elif f2 == 1:
                     self.dir = (self.dir + 1) % 4
                 else:
-                    self.dir = (self.dir - 1) % 4
+                    if cur_tile.sides == 3 and cur_tile.turn == "right" and cur_tile.dist_to_border(self.x, self.y, 3) > 0.25:
+                        self.dir = (self.dir + 1) % 4
+                    elif cur_tile.sides == 3 and cur_tile.turn == "left" and cur_tile.dist_to_border(self.x, self.y, 3) < 0.25:
+                        self.dir = (self.dir + 1) % 4
+                    else:
+                        self.dir = (self.dir - 1) % 4
             sp = choice([1, 0, -1, 0, 0])
             if self.speed > 0.05:
                 self.speed += sp*0.05
