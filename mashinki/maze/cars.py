@@ -74,11 +74,13 @@ class StupidCar(Car):
                         self.dir = (self.dir + 1) % 4
                     else:
                         self.dir = (self.dir - 1) % 4
-            sp = choice([1, 0, -1, 0, 0])
-            if self.speed > 0.05:
+            sp = choice([1, 0, -1, 0, 0, 1])
+            if self.speed > 0.2 and self.speed < 3:
                 self.speed += sp*0.05
-            else:
+            elif self.speed < 0.2:
                 self.speed += 0.05
+            else:
+                self.speed -= 0.05
         else:
             pass
 
@@ -125,10 +127,17 @@ class SmartCar(Car):
                 elif f2 == 1:
                     self.dir = (self.dir + 1) % 4
                 else:
-                    self.dir = (self.dir - 1) % 4
-            if isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn in ['rightnleft', 'upndown']:
+                    if cur_tile.sides == 3 and cur_tile.turn == "right" and cur_tile.dist_to_border(self.x, self.y,
+                                                                                                    3) > 0.25:
+                        self.dir = (self.dir + 1) % 4
+                    elif cur_tile.sides == 3 and cur_tile.turn == "left" and cur_tile.dist_to_border(self.x, self.y,
+                                                                                                     3) < 0.25:
+                        self.dir = (self.dir + 1) % 4
+                    else:
+                        self.dir = (self.dir - 1) % 4
+            if isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn in ['rightnleft', 'upndown'] and self.speed < 3:
                 self.speed += 0.025
-            elif isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn not in ['rightnleft', 'upndown'] and self.speed > 0.75:
+            elif isinstance(next_tile, Room_tile) and next_tile.sides == 2 and next_tile.turn not in ['rightnleft', 'upndown'] and self.speed > 0.5:
                 self.speed -= 0.05
         else:
             pass
