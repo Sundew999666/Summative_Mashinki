@@ -1,3 +1,5 @@
+# Просто инициализация поля
+
 import pygame
 
 pygame.init()
